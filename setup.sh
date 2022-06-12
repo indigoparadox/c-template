@@ -58,6 +58,8 @@ TEMPLATE_FILES="
    tests/check.c
    tests/chktemplate.c"
 
+PROJECT_FILES=""
+
 if [ "$PROJECT_LICENSE" = "gpl3" ]; then
    wget "https://www.gnu.org/licenses/gpl-3.0.txt" -O "$LICENSE_PATH"
 elif [ "$PROJECT_LICENSE" = "lgpl3" ]; then
@@ -75,15 +77,12 @@ if [ -n "$PROJECT_NAME" ]; then
          -D TEMPLATE="$PROJECT_UPPER" \
          $PROJECT_OPTS \
          "$PROJECT_DIR/$TEMPL_ITER.m4" > "$PROJECT_DIR/$TEMPL_OUT"
+      PROJECT_FILES="$PROJECT_FILES $PROJECT_DIR/$TEMPL_OUT"
    done
 fi
 
-if [ $DO_CLEAN = 1 ]; then
-   #rm -rf "$PROJECT_DIR/.git"
-   find "$PROJECT_DIR" -name "*.m4" -exec git rm {} \;
-   #git init "$PROJECT_DIR"
-   git rm --cached "$0"
-   git add $TEMPLATE_FILES LICENSE
-   git commit -a -m "Initial revision based on template."
-fi
+find "$PROJECT_DIR" -name "*.m4" -exec git rm {} \;
+git rm --cached "$0"
+git add $PROJECT_FILES LICENSE
+git commit -a -m "Initial revision based on template."
 
