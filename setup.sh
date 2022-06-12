@@ -52,11 +52,11 @@ PROJECT_UPPER=`echo "$PROJECT_NAME" | \
    tr '[a-z]' '[A-Z]'`
 
 TEMPLATE_FILES="
-   src/Makefile
+   Makefile
    src/template.c
    src/template.h
    tests/check.c
-   tests/check_template.c"
+   tests/chktemplate.c"
 
 if [ "$PROJECT_LICENSE" = "gpl3" ]; then
    wget "https://www.gnu.org/licenses/gpl-3.0.txt" -O "$LICENSE_PATH"
@@ -79,13 +79,11 @@ if [ -n "$PROJECT_NAME" ]; then
 fi
 
 if [ $DO_CLEAN = 1 ]; then
-   rm -rf "$PROJECT_DIR/.git"
-   find "$PROJECT_DIR" -name "*.m4" -exec rm {} \;
-   git init "$PROJECT_DIR"
-   git add $TEMPLATE_FILES .gitignore LICENSE src/static src/templates
+   #rm -rf "$PROJECT_DIR/.git"
+   find "$PROJECT_DIR" -name "*.m4" -exec git rm {} \;
+   #git init "$PROJECT_DIR"
+   git rm --cached "$0"
+   git add $TEMPLATE_FILES LICENSE
    git commit -a -m "Initial revision based on template."
-   rm "$0"
 fi
-
-#rm $0
 
